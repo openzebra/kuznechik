@@ -1,6 +1,12 @@
-import type { Block128 } from './types';
-import { KeyStore } from './keystore';
-import { encryptBlock, decryptBlock, sumMod2, additionBlock128_2, additionRevBlock2 } from './transforms';
+import type { Block128 } from "./types";
+import { KeyStore } from "./keystore";
+import {
+  encryptBlock,
+  decryptBlock,
+  sumMod2,
+  additionBlock128_2,
+  additionRevBlock2,
+} from "./transforms";
 
 const BLOCK_SIZE = 16;
 
@@ -15,7 +21,9 @@ export class AlgCbc {
 
   public setIv(iv: Uint8Array): void {
     if (iv.length < BLOCK_SIZE) {
-      throw new Error(`Initialization vector length must be at least ${BLOCK_SIZE} bytes`);
+      throw new Error(
+        `Initialization vector length must be at least ${BLOCK_SIZE} bytes`,
+      );
     }
     this.iv = iv.slice();
   }
@@ -41,7 +49,10 @@ export class AlgCbc {
     const decryptedData = data.slice();
 
     for (let i = 0; i < blockCount; i++) {
-      const block = decryptedData.subarray(i * BLOCK_SIZE, (i + 1) * BLOCK_SIZE);
+      const block = decryptedData.subarray(
+        i * BLOCK_SIZE,
+        (i + 1) * BLOCK_SIZE,
+      );
       const encryptedBlock = block.slice();
       decryptBlock(block, this.keyStore.keys);
       sumMod2(block, this.iv.subarray(0, BLOCK_SIZE));
@@ -54,7 +65,9 @@ export class AlgCbc {
   private updateIv(block: Block128): void {
     const ivLength = this.iv.length;
     if (ivLength < BLOCK_SIZE) {
-      throw new Error(`Initialization vector length must be at least ${BLOCK_SIZE} bytes`);
+      throw new Error(
+        `Initialization vector length must be at least ${BLOCK_SIZE} bytes`,
+      );
     }
 
     const shiftLength = ivLength - BLOCK_SIZE;
@@ -68,7 +81,9 @@ export class AlgCbc {
 
   private validateIv(): void {
     if (this.iv.length < BLOCK_SIZE) {
-      throw new Error(`Initialization vector not set or length less than ${BLOCK_SIZE} bytes`);
+      throw new Error(
+        `Initialization vector not set or length less than ${BLOCK_SIZE} bytes`,
+      );
     }
   }
 }

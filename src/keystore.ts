@@ -12,15 +12,14 @@ const INNER_LOOP_ITERATIONS = 8;
 export class KeyStore {
   public keys: Block128[];
   #masterKey: Block256;
-  #hashFunction: HashFunction;
+  #hashFunction?: HashFunction;
 
-  constructor(hashFunction: HashFunction) {
+  constructor() {
     this.#masterKey = new Uint8Array(MASTER_KEY_SIZE);
     this.keys = Array.from(
       { length: NUM_KEYS },
       () => new Uint8Array(KEY_SIZE),
     );
-    this.#hashFunction = hashFunction;
   }
 
   public setHashFunction(hashFunction: HashFunction): void {
@@ -28,7 +27,9 @@ export class KeyStore {
   }
 
   public async setPassword(password: Uint8Array): Promise<void> {
-    this.#masterKey = await this.#hashFunction(password);
+    if (this.#hashFunction) {
+      this.#masterKey = await this.#hashFunction(password);
+    }
     this.expandKey();
   }
 
