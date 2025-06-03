@@ -17,7 +17,9 @@ describe("AlgEcb", () => {
       0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef,
     ]);
 
-    const kuz = new KeyStore(masterKey);
+    const kuz = new KeyStore();
+    kuz.setMasterKey(masterKey);
+
     const alg = new AlgEcb(kuz);
 
     const expectedEncData = new Uint8Array([
@@ -59,7 +61,8 @@ describe("AlgCtr", () => {
       0x20, 0xbd, 0xba, 0x73,
     ]);
 
-    const kuz = new KeyStore(masterKey);
+    const kuz = new KeyStore();
+    kuz.setMasterKey(masterKey);
     const alg = new AlgCtr(kuz);
     alg.setGamma(gamma.slice());
 
@@ -95,7 +98,8 @@ describe("AlgOfb", () => {
       0xf6, 0x90, 0x31, 0x50,
     ]);
 
-    const kuz = new KeyStore(masterKey);
+    const kuz = new KeyStore();
+    kuz.setMasterKey(masterKey);
     const alg = new AlgOfb(kuz);
     alg.setGamma(gamma.slice());
 
@@ -131,12 +135,11 @@ describe("AlgCbc", () => {
       0x60, 0xb6, 0x39, 0x70,
     ]);
 
-    const kuz = new KeyStore(masterKey);
+    const kuz = new KeyStore();
+    kuz.setMasterKey(masterKey);
     const alg = new AlgCbc(kuz);
-    alg.setGamma(gamma.slice());
 
     const encData = alg.encrypt(DATA);
-    alg.setGamma(gamma.slice());
     const decData = alg.decrypt(encData);
 
     expect(encData.subarray(0, 64)).toEqual(expectedEncData);
@@ -167,12 +170,11 @@ describe("AlgCfb", () => {
       0x44, 0xfb, 0xf4, 0xd1,
     ]);
 
-    const kuz = new KeyStore(masterKey);
+    const kuz = new KeyStore();
+    kuz.setMasterKey(masterKey);
     const alg = new AlgCfb(kuz);
-    alg.setGamma(gamma.slice());
 
     const encData = alg.encrypt(DATA);
-    alg.setGamma(gamma.slice());
     const decData = alg.decrypt(encData);
 
     expect(encData.subarray(0, 64)).toEqual(expectedEncData);
@@ -192,7 +194,8 @@ describe("AlgMac", () => {
       0x33, 0x6f, 0x4d, 0x29, 0x60, 0x59, 0xfb, 0xe3,
     ]);
 
-    const kuz = new KeyStore(masterKey);
+    const kuz = new KeyStore();
+    kuz.setMasterKey(masterKey);
     const alg = new AlgMac(kuz);
 
     const encData = alg.encrypt(DATA);
