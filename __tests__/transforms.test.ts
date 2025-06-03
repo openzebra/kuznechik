@@ -1,18 +1,21 @@
-import type { Block128 } from "../";
-import { describe, test, expect } from "vitest";
-import { encryptBlock, decryptBlock, tfmS, tfmR, tfmL } from "../";
+import { describe, test, expect } from 'vitest';
+import { encryptBlock, decryptBlock, tfmS, tfmR, tfmL } from '../';
+import { KeyStore } from '../';
+import type { Block128, Block256 } from '../';
 
-describe("Transforms", () => {
-  test("encrypt_decrypt_block", () => {
-    const masterKey = new Uint8Array([
+describe('Transforms', () => {
+  test('encrypt_decrypt_block', () => {
+    const masterKey: Block256 = new Uint8Array([
       0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff, 0x00, 0x11, 0x22, 0x33,
       0x44, 0x55, 0x66, 0x77, 0xfe, 0xdc, 0xba, 0x98, 0x76, 0x54, 0x32, 0x10,
       0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef,
     ]);
 
-    const kuz = KeyStore.withMasterKey(masterKey);
+    const hashFunction = async (_: Uint8Array): Promise<Block256> => new Uint8Array(32);
+    const kuz = new KeyStore(hashFunction);
+    kuz.setMasterKey(masterKey);
 
-    const data = new Uint8Array([
+    const data: Block128 = new Uint8Array([
       0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x00, 0xff, 0xee, 0xdd, 0xcc,
       0xbb, 0xaa, 0x99, 0x88,
     ]);
@@ -30,8 +33,8 @@ describe("Transforms", () => {
     expect(data).toEqual(dataBackup);
   });
 
-  test("transform_s", () => {
-    const data = new Uint8Array([
+  test('transform_s', () => {
+    const data: Block128 = new Uint8Array([
       0xff, 0xee, 0xdd, 0xcc, 0xbb, 0xaa, 0x99, 0x88, 0x11, 0x22, 0x33, 0x44,
       0x55, 0x66, 0x77, 0x00,
     ]);
@@ -69,8 +72,8 @@ describe("Transforms", () => {
     );
   });
 
-  test("transform_r", () => {
-    const data = new Uint8Array([
+  test('transform_r', () => {
+    const data: Block128 = new Uint8Array([
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
       0x00, 0x00, 0x01, 0x00,
     ]);
@@ -108,8 +111,8 @@ describe("Transforms", () => {
     );
   });
 
-  test("transform_l", () => {
-    const data = new Uint8Array([
+  test('transform_l', () => {
+    const data: Block128 = new Uint8Array([
       0x64, 0xa5, 0x94, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
       0x00, 0x00, 0x00, 0x00,
     ]);

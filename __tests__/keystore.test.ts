@@ -1,6 +1,6 @@
+import type { Block256 } from '../';
 import { describe, test, expect } from 'vitest';
 import { KeyStore } from '../';
-import type { Block256 } from '../';
 import { SHA3 } from 'sha3';
 
 const hashFunction = async (passwordBytes: Uint8Array) => {

@@ -1,19 +1,22 @@
 import type { Block128, Block256 } from "./types";
 import { K_PI, K_PI_REV, MULT_TABLE } from "./tables";
 
+const BLOCK_SIZE = 16;
+const KEY_COUNT = 10;
+
 export function encryptBlock(data: Block128, keys: Block128[]): void {
-  if (data.length !== 16 || keys.length !== 10)
+  if (data.length !== BLOCK_SIZE || keys.length !== KEY_COUNT)
     throw new Error("Invalid input length");
-  for (let i = 0; i < 9; i++) {
+  for (let i = 0; i < KEY_COUNT - 1; i++) {
     tfmLsx(data, keys[i]);
   }
-  tfmX(data, keys[9]);
+  tfmX(data, keys[KEY_COUNT - 1]);
 }
 
 export function decryptBlock(data: Block128, keys: Block128[]): void {
-  if (data.length !== 16 || keys.length !== 10)
+  if (data.length !== BLOCK_SIZE || keys.length !== KEY_COUNT)
     throw new Error("Invalid input length");
-  for (let i = 9; i > 0; i--) {
+  for (let i = KEY_COUNT - 1; i > 0; i--) {
     tfmX(data, keys[i]);
     tfmRevL(data);
     tfmRevS(data);
@@ -22,19 +25,19 @@ export function decryptBlock(data: Block128, keys: Block128[]): void {
 }
 
 export function tfmC(data: Block128, number: number): void {
-  if (data.length !== 16) throw new Error("Invalid data length");
+  if (data.length !== BLOCK_SIZE) throw new Error("Invalid data length");
   data.fill(0);
-  data[15] = number;
+  data[BLOCK_SIZE - 1] = number;
   tfmL(data);
 }
 
 export function tfmF(data: Block256, key: Block128): void {
-  if (data.length !== 32 || key.length !== 16)
+  if (data.length !== BLOCK_SIZE * 2 || key.length !== BLOCK_SIZE)
     throw new Error("Invalid input length");
-  const temp = data.subarray(0, 16).slice();
-  tfmLsx(data.subarray(0, 16), key);
+  const temp = data.subarray(0, BLOCK_SIZE).slice();
+  tfmLsx(data.subarray(0, BLOCK_SIZE), key);
   tfmXBlock256(data);
-  data.set(temp, 16);
+  data.set(temp, BLOCK_SIZE);
 }
 
 export function tfmLsx(data: Block128, key: Block128): void {
@@ -44,32 +47,32 @@ export function tfmLsx(data: Block128, key: Block128): void {
 }
 
 export function tfmX(data: Block128, key: Block128): void {
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < BLOCK_SIZE; i++) {
     data[i] ^= key[i];
   }
 }
 
 export function tfmXBlock256(data: Block256): void {
-  for (let i = 0; i < 16; i++) {
-    data[i] ^= data[i + 16];
+  for (let i = 0; i < BLOCK_SIZE; i++) {
+    data[i] ^= data[i + BLOCK_SIZE];
   }
 }
 
 export function tfmS(data: Block128): void {
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < BLOCK_SIZE; i++) {
     data[i] = K_PI[data[i]];
   }
 }
 
 export function tfmL(data: Block128): void {
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < BLOCK_SIZE; i++) {
     tfmR(data);
   }
 }
 
 export function tfmR(data: Block128): void {
   const temp = trfLinear(data);
-  for (let i = 15; i > 0; i--) {
+  for (let i = BLOCK_SIZE - 1; i > 0; i--) {
     data[i] = data[i - 1];
   }
   data[0] = temp;
@@ -97,22 +100,23 @@ export function trfLinear(data: Block128): number {
 }
 
 export function tfmRevS(data: Block128): void {
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < BLOCK_SIZE; i++) {
     data[i] = K_PI_REV[data[i]];
   }
 }
 
 export function tfmRevR(data: Block128): void {
-  const first = data[0];
-  for (let i = 0; i < 15; i++) {
+  const originalFirst = data[0];
+  for (let i = 0; i < BLOCK_SIZE - 1; i++) {
     data[i] = data[i + 1];
   }
-  data[15] = trfLinear(data);
-  data[0] = first;
+  data[BLOCK_SIZE - 1] = originalFirst;
+  const linear = trfLinear(data);
+  data[BLOCK_SIZE - 1] = linear;
 }
 
 export function tfmRevL(data: Block128): void {
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < BLOCK_SIZE; i++) {
     tfmRevR(data);
   }
 }
@@ -125,7 +129,7 @@ export function sumMod2(b1: Uint8Array, b2: Uint8Array): void {
 }
 
 export function additionBlock128_2(data: Uint8Array): Uint8Array {
-  return additionBlockS2(data, 16);
+  return additionBlockS2(data, BLOCK_SIZE);
 }
 
 export function additionBlockS2(data: Uint8Array, s: number): Uint8Array {
