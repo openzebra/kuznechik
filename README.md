@@ -11,14 +11,14 @@
 
 ## Установка
 ```bash
-npm install kuznechik
+npm install @hicaru/kuznechik.js
 ```
 
 ## Использование
 Пример шифрования и дешифрования в режиме ECB:
 
 ```ts
-import { KeyStore, AlgEcb } from 'kuznechik';
+import { KeyStore, AlgEcb } from '@hicaru/kuznechik.js';
 
 const masterKey = new Uint8Array([
   0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
