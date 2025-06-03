@@ -2,8 +2,18 @@
   "name": "kuznechik.js",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "rollup -c",
+    "format": "prettier --write ./**/*.{js,ts,test.ts}",
+    "build:watch": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "prettier": "^3.5.3",
+    "vitest": "^3.2.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
