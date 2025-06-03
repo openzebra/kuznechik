@@ -55,7 +55,7 @@ export class AlgOfb {
     if (this.gamma.length < BLOCK_SIZE) {
       throw new Error(`Gamma must be at least ${BLOCK_SIZE} bytes`);
     }
-    const gammaBlock = this.gamma.subarray(0, BLOCK_SIZE).slice() as Block128;
+    const gammaBlock = this.gamma.subarray(0, BLOCK_SIZE); // Убрали .slice()
     encryptBlock(gammaBlock, this.kuz.keys);
     return gammaBlock;
   }
