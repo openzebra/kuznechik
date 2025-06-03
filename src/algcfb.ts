@@ -6,7 +6,8 @@ import {
   additionBlockS2,
   additionRevBlock2,
 } from "./transforms";
-import { BLOCK_SIZE, DEFAULT_S } from './constants';
+import { BLOCK_SIZE, DEFAULT_S } from "./constants";
+import { updateIv, validateIv } from "./utils";
 
 export class AlgCfb {
   private keyStore: KeyStore;
@@ -72,31 +73,11 @@ export class AlgCfb {
     return encryptedIv;
   }
 
-  private updateIv(data: Uint8Array): void {
-    const ivLength = this.iv.length;
-    if (ivLength < BLOCK_SIZE) {
-      throw new Error(
-        `Initialization vector length must be at least ${BLOCK_SIZE} bytes`,
-      );
-    }
-    if (data.length < this.s) {
-      throw new Error(`Data length must be at least s bytes: ${this.s}`);
-    }
-
-    const shiftLength = ivLength - this.s;
-    for (let i = 0; i < shiftLength; i++) {
-      this.iv[i] = this.iv[i + this.s];
-    }
-    for (let i = 0; i < this.s; i++) {
-      this.iv[shiftLength + i] = data[i];
-    }
+  private updateIv(block: Uint8Array): void {
+    updateIv(this.iv, block, this.s);
   }
 
   private validateIv(): void {
-    if (this.iv.length < BLOCK_SIZE) {
-      throw new Error(
-        `Initialization vector not set or length less than ${BLOCK_SIZE} bytes`,
-      );
-    }
+    validateIv(this.iv, BLOCK_SIZE);
   }
 }

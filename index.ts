@@ -8,3 +8,4 @@ export * from './src/algcfb';
 export * from './src/algctr';
 export * from './src/algecb';
 export * from './src/algofb';
+export * from './src/utils';

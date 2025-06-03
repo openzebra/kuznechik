@@ -1,7 +1,7 @@
 import type { Block128 } from "./types";
 import { KeyStore } from "./keystore";
 import { encryptBlock, sumMod2 } from "./transforms";
-import { BLOCK_SIZE, INNER_LOOP_ITERATIONS } from './constants';
+import { BLOCK_SIZE, INNER_LOOP_ITERATIONS } from "./constants";
 
 export class AlgMac {
   private kuz: KeyStore;

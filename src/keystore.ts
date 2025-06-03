@@ -1,6 +1,12 @@
 import type { Block128, Block256 } from "./types";
 import { tfmC, tfmF } from "./transforms";
-import { INNER_LOOP_ITERATIONS, KEY_SIZE, MASTER_KEY_SIZE, NUM_KEYS, OUTER_LOOP_ITERATIONS } from "./constants";
+import {
+  INNER_LOOP_ITERATIONS,
+  KEY_SIZE,
+  MASTER_KEY_SIZE,
+  NUM_KEYS,
+  OUTER_LOOP_ITERATIONS,
+} from "./constants";
 
 type HashFunction = (passwordBytes: Uint8Array) => Promise<Block256>;
 

@@ -7,7 +7,8 @@ import {
   additionBlock128_2,
   additionRevBlock2,
 } from "./transforms";
-import { BLOCK_SIZE } from './constants';
+import { BLOCK_SIZE } from "./constants";
+import { updateIv, validateIv } from "./utils";
 
 export class AlgCbc {
   private keyStore: KeyStore;
@@ -62,27 +63,10 @@ export class AlgCbc {
   }
 
   private updateIv(block: Block128): void {
-    const ivLength = this.iv.length;
-    if (ivLength < BLOCK_SIZE) {
-      throw new Error(
-        `Initialization vector length must be at least ${BLOCK_SIZE} bytes`,
-      );
-    }
-
-    const shiftLength = ivLength - BLOCK_SIZE;
-    for (let i = 0; i < shiftLength; i++) {
-      this.iv[i] = this.iv[i + BLOCK_SIZE];
-    }
-    for (let i = 0; i < BLOCK_SIZE; i++) {
-      this.iv[shiftLength + i] = block[i];
-    }
+    updateIv(this.iv, block, BLOCK_SIZE);
   }
 
   private validateIv(): void {
-    if (this.iv.length < BLOCK_SIZE) {
-      throw new Error(
-        `Initialization vector not set or length less than ${BLOCK_SIZE} bytes`,
-      );
-    }
+    validateIv(this.iv, BLOCK_SIZE);
   }
 }

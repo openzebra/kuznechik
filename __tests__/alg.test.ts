@@ -138,10 +138,10 @@ describe("AlgCbc", () => {
     const kuz = new KeyStore();
     kuz.setMasterKey(masterKey);
     const alg = new AlgCbc(kuz);
-    alg.setIv(gamma.slice()); 
+    alg.setIv(gamma.slice());
 
     const encData = alg.encrypt(DATA);
-    alg.setIv(gamma.slice()); 
+    alg.setIv(gamma.slice());
     const decData = alg.decrypt(encData);
 
     expect(encData.subarray(0, 64)).toEqual(expectedEncData);

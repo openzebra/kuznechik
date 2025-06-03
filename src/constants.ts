@@ -6,4 +6,3 @@ export const KEY_SIZE = 16;
 export const NUM_KEYS = 10;
 export const OUTER_LOOP_ITERATIONS = 4;
 export const INNER_LOOP_ITERATIONS = 8;
-
