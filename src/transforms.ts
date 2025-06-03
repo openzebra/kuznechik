@@ -1,7 +1,7 @@
 import type { Block128, Block256 } from "./types";
 import { K_PI, K_PI_REV, MULT_TABLE } from "./tables";
+import { BLOCK_SIZE } from "./constants";
 
-const BLOCK_SIZE = 16;
 const KEY_COUNT = 10;
 
 export function encryptBlock(data: Block128, keys: Block128[]): void {

@@ -1,8 +1,7 @@
 import type { Block128 } from "./types";
 import { KeyStore } from "./keystore";
+import { BLOCK_SIZE } from './constants';
 import { encryptBlock, sumMod2 } from "./transforms";
-
-const BLOCK_SIZE = 16;
 
 export class AlgCtr {
   private kuz: KeyStore;

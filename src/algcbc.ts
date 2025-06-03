@@ -7,8 +7,7 @@ import {
   additionBlock128_2,
   additionRevBlock2,
 } from "./transforms";
-
-const BLOCK_SIZE = 16;
+import { BLOCK_SIZE } from './constants';
 
 export class AlgCbc {
   private keyStore: KeyStore;

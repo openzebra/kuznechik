@@ -1,9 +1,7 @@
 import type { Block128 } from "./types";
 import { KeyStore } from "./keystore";
 import { encryptBlock, sumMod2 } from "./transforms";
-
-const BLOCK_SIZE = 16;
-const MIN_GAMMA_SIZE = 32;
+import { BLOCK_SIZE, MIN_GAMMA_SIZE } from "./constants";
 
 export class AlgOfb {
   private kuz: KeyStore;

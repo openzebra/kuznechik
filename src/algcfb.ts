@@ -6,9 +6,7 @@ import {
   additionBlockS2,
   additionRevBlock2,
 } from "./transforms";
-
-const BLOCK_SIZE = 16;
-const DEFAULT_S = 16;
+import { BLOCK_SIZE, DEFAULT_S } from './constants';
 
 export class AlgCfb {
   private keyStore: KeyStore;

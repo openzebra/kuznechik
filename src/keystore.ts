@@ -1,13 +1,8 @@
 import type { Block128, Block256 } from "./types";
 import { tfmC, tfmF } from "./transforms";
+import { INNER_LOOP_ITERATIONS, KEY_SIZE, MASTER_KEY_SIZE, NUM_KEYS, OUTER_LOOP_ITERATIONS } from "./constants";
 
 type HashFunction = (passwordBytes: Uint8Array) => Promise<Block256>;
-
-const MASTER_KEY_SIZE = 32;
-const KEY_SIZE = 16;
-const NUM_KEYS = 10;
-const OUTER_LOOP_ITERATIONS = 4;
-const INNER_LOOP_ITERATIONS = 8;
 
 export class KeyStore {
   public keys: Block128[];

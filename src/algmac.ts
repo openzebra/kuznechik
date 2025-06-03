@@ -1,8 +1,7 @@
 import type { Block128 } from "./types";
 import { KeyStore } from "./keystore";
 import { encryptBlock, sumMod2 } from "./transforms";
-
-const BLOCK_SIZE = 16;
+import { BLOCK_SIZE, INNER_LOOP_ITERATIONS } from './constants';
 
 export class AlgMac {
   private kuz: KeyStore;
@@ -12,7 +11,7 @@ export class AlgMac {
 
   constructor(kuz: KeyStore) {
     this.kuz = kuz;
-    this.s = 8;
+    this.s = INNER_LOOP_ITERATIONS;
     this.k1 = new Uint8Array(BLOCK_SIZE);
     this.k2 = new Uint8Array(BLOCK_SIZE);
     this.makeK();
