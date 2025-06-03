@@ -11,7 +11,11 @@ export function validateIv(
   }
 }
 
-export function updateIv(iv: Uint8Array, data: Uint8Array, s: number = BLOCK_SIZE): void {
+export function updateIv(
+  iv: Uint8Array,
+  data: Uint8Array,
+  s: number = BLOCK_SIZE,
+): void {
   validateIv(iv);
   if (data.length < s) {
     throw new Error(`Data length must be at least ${s} bytes`);
