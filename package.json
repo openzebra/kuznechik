@@ -1,6 +1,6 @@
 {
   "name": "@hicaru/kuznechik.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Библиотека для шифрования по алгоритму Кузнечик (ГОСТ Р 34.12-2015)",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

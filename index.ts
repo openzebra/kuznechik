@@ -1,5 +1,6 @@
 export * from './src/tables';
 export * from './src/transforms';
+export * from './src/constants';
 export * from './src/types';
 export * from './src/keystore';
 export * from './src/algmac';
